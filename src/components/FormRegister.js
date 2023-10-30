@@ -28,10 +28,10 @@ class FormRegister extends Component {
 
     render() {
         return (
-        <View>
+        <View style = {styles.productswrapper}>
             <Text>Registrate a mi app</Text>
-            <View>
-                <TextInput
+            <View style = {styles.registro}>
+                <TextInput 
                     
                     placeholder = 'Dinos tu nombre'
                     keyboardType = 'default'
@@ -85,7 +85,23 @@ class FormRegister extends Component {
         )
     }
 }
-
+const styles = StyleSheet.create({
+    productswrapper:{
+        marginTop: 30,
+        marginBottom: 30
+    },
+    registro:{
+       
+        backgroundColor: 'green',
+        aspectRatio: 5,
+        padding: 30,
+        marginTop: 40,
+        border: 5,
+        fontFamily: 'calibri',
+        fontSize: 15,
+       
+    },
+})
 
 
 export default FormRegister
