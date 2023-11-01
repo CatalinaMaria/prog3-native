@@ -29,10 +29,10 @@ class FormRegister extends Component {
     render() {
         return (
         <View style = {styles.productswrapper}>
-            <Text>Registrate a mi app</Text>
+            <Text style = {styles.productstitle}>Registrate en mi app</Text>
             <View style = {styles.registro}>
                 <TextInput 
-                    
+                    style = {styles.control}
                     placeholder = 'Dinos tu nombre'
                     keyboardType = 'default'
                     value = {this.state.name}
@@ -40,20 +40,20 @@ class FormRegister extends Component {
                 />
 
                 <TextInput
-                   
+                   style = {styles.control}
                     placeholder = 'Dinos tu email'
                     keyboardType = 'email-address'
                     value = {this.state.mail}
                     onChangeText = { (text) => this.setState({mail: text}) }
                 />
                 <TextInput
-                    
+                    style = {styles.control}
                     placeholder='Crea una minibio'
                     value={this.state.minibio}
                     onChangeText={(text) => this.setState({minibio:text})}
                 />
                 <TextInput
-                    
+                    style = {styles.control}
                     placeholder = 'Dinos tu password'
                     keyboardType = 'default'
                     value = {this.state.password}
@@ -64,11 +64,11 @@ class FormRegister extends Component {
                 <Text
                     
                 >
-                    ¿Ya estás regustrado?
-                    <TouchableOpacity
+                    ¿Ya estás registrado?
+                    <TouchableOpacity style = {styles.button}
                         onPress={()=> this.props.navegacion.navigate('Login')}
                     >
-                        Logueate aquí!
+                         INICIA SESIÓN
                     </TouchableOpacity>
                 </Text>
 
@@ -76,7 +76,7 @@ class FormRegister extends Component {
                 <TouchableOpacity 
                 onPress={()=> this.registrarUsuario(this.state.name, this.state.mail, this.state.password)}                
                 >
-                    <Text >Registrame</Text>
+                    <Text style = {styles.button}>Registrame</Text>
                 </TouchableOpacity>
 
             </View>
@@ -88,7 +88,10 @@ class FormRegister extends Component {
 const styles = StyleSheet.create({
     productswrapper:{
         marginTop: 30,
-        marginBottom: 30
+        marginBottom: 30,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     registro:{
        
@@ -99,8 +102,38 @@ const styles = StyleSheet.create({
         border: 5,
         fontFamily: 'calibri',
         fontSize: 15,
+        height: 350,
+        width: 350,
+        
        
     },
+    productstitle:{
+        fontSize: 40,
+        fontWeight: 400,
+        color: 'gray',
+        fontFamily:'Gill Sans',
+    },
+    control:{
+        outerWidth: 100,
+        backgroundColor: '#9fc1ad',
+        padding: 10,
+        border: 5,
+        marginBottom: 20,
+        border: 1,
+        fontFamily: 'calibri',
+        fontSize: 18,
+        color: 'white',
+
+    },
+    button:{
+        width: 100,
+        padding: 3,
+        color: 'white',
+        fontSize: 10,
+        fontFamily: 'arial',
+        width:80
+
+    }
 })
 
 

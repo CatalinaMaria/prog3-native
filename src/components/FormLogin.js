@@ -21,18 +21,18 @@ export default class FormLogin extends Component {
 
   render() {
     return (
-      <View>
-        <Text>Logueate en mi app</Text>
-        <View>
+      <View style = {styles.productswrapper}>
+        <Text style = {styles.productstitle}>Inicia Sesión</Text>
+        <View style = {styles.registro}>
                 <TextInput
-                   
+                    style = {styles.control}
                     placeholder = 'Dinos tu email'
                     keyboardType = 'email-address'
                     value = {this.state.mail}
                     onChangeText = { (text) => this.setState({mail: text}) }
                 />
                 <TextInput
-                   
+                    style = {styles.control}
                     placeholder = 'Dinos tu password'
                     keyboardType = 'email-address'
                     value = {this.state.password}
@@ -42,11 +42,68 @@ export default class FormLogin extends Component {
                    
                     onPress={() => this.loguearUsuario(this.state.mail, this.state.password)}
                 >
-                    <Text>Iniciar sesión</Text>
+                    <Text  style = {styles.button}>Iniciar sesión</Text>
                 </TouchableOpacity>
         </View>
       </View>
     )
+
+  
+    
   }
+
+  
 }
+
+const styles = StyleSheet.create({
+    productswrapper:{
+        marginTop: 30,
+        marginBottom: 30,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    registro:{
+       
+        backgroundColor: 'green',
+        aspectRatio: 5,
+        padding: 30,
+        marginTop: 40,
+        border: 5,
+        fontFamily: 'calibri',
+        fontSize: 15,
+        height: 350,
+        width: 350,
+        
+       
+    },
+    productstitle:{
+        fontSize: 40,
+        fontWeight: 400,
+        color: 'gray',
+        fontFamily:'Gill Sans',
+    },
+    control:{
+        outerWidth: 100,
+        backgroundColor: '#9fc1ad',
+        padding: 10,
+        border: 5,
+        marginBottom: 20,
+        border: 1,
+        fontFamily: 'calibri',
+        fontSize: 18,
+        color: 'white',
+
+    },
+
+    button:{
+        width: 100,
+        padding: 3,
+        color: 'white',
+        fontSize: 10,
+        fontFamily: 'arial',
+        width:80
+
+    }
+})
 
