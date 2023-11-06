@@ -214,7 +214,8 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 10,
         fontFamily: 'arial',
-        width: 80
+        width: 80,
+        
 
     },
     errorMessage: {
