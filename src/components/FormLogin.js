@@ -3,57 +3,112 @@ import React, { Component } from 'react'
 import { auth } from '../firebase/config'
 
 export default class FormLogin extends Component {
-    constructor(props){
-        super(props)
+    constructor(props) {
+        super(props);
         this.state = {
-            mail:'',
-            password: ''
+            mail: '',
+            password: '',
+            emailError: null, // Estado para el mensaje de error de correo electrónico
+            passwordError: null, // Estado para el mensaje de error de contraseña
+            allFieldsCompleted: false, // Estado para verificar campos completos
+            generalError: null, // Estado para mensajes de error generales
+        };
+    }
+
+    loguearUsuario(email, password) {
+        this.setState({
+            emailError: null,
+            passwordError: null,
+            generalError: null, // Limpiar los mensajes de error
+        });
+
+        if (!email || !password) {
+            this.setState({ generalError: 'Por favor, completa todos los campos.' });
+        } else {
+            auth
+                .signInWithEmailAndPassword(email, password)
+                .then((user) => {
+                    this.props.navegacion.navigate('TabNavigation');
+                })
+                .catch((error) => {
+                    switch (error.code) {
+                        case 'auth/invalid-email':
+                            this.setState({ emailError: 'El correo electrónico es incorrecto.' });
+                            break;
+                        case 'auth/user-not-found':
+                        case 'auth/wrong-password':
+                            this.setState({ passwordError: 'Contraseña incorrecta. Por favor, inténtalo de nuevo.' });
+                            break;
+                        default:
+                            this.setState({ generalError: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.' });
+                            console.log(error);
+                            break;
+                    }
+                });
         }
     }
 
-    loguearUsuario(email, password){
-        auth.signInWithEmailAndPassword(email, password)
-        .then((user)=> {
-            this.props.navegacion.navigate('TabNavigation')
-        })
-        .catch((e)=> console.log(e))
+    actualizarEstadoCampos() {
+        const { mail, password } = this.state;
+        const allFieldsCompleted = mail.length > 0 && password.length > 0;
+        this.setState({ allFieldsCompleted });
     }
 
-  render() {
-    return (
-      <View style = {styles.productswrapper}>
-        <Text style = {styles.productstitle}>Inicia Sesión</Text>
-        <View style = {styles.registro}>
-                <TextInput
-                    style = {styles.control}
-                    placeholder = 'Dinos tu email'
-                    keyboardType = 'email-address'
-                    value = {this.state.mail}
-                    onChangeText = { (text) => this.setState({mail: text}) }
-                />
-                <TextInput
-                    style = {styles.control}
-                    placeholder = 'Dinos tu password'
-                    keyboardType = 'email-address'
-                    value = {this.state.password}
-                    onChangeText = { (text) => this.setState({password: text}) }
-                />
-                <TouchableOpacity
-                   
-                    onPress={() => this.loguearUsuario(this.state.mail, this.state.password)}
-                >
-                    <Text  style = {styles.button}>Iniciar sesión</Text>
-                </TouchableOpacity>
-        </View>
-      </View>
-    )
+    render() {
+        return (
+            <View style={styles.productswrapper}>
+                <Text style={styles.productstitle}>Inicia Sesión</Text>
+                <View style={styles.registro}>
+                    <TextInput
+                        style={styles.control}
+                        placeholder="Dinos tu email"
+                        keyboardType="email-address"
+                        value={this.state.mail}
+                        onChangeText={(text) => {
+                            this.setState({ mail: text });
+                            this.actualizarEstadoCampos(); // Actualizar el estado de campos completos
+                        }}
+                    />
+                    {this.state.emailError && (
+                        <Text style={styles.errorMessage}>{this.state.emailError}</Text>
+                    )}
 
-  
-    
-  }
+                    <TextInput
+                        style={styles.control}
+                        placeholder="Dinos tu password"
+                        keyboardType="default"
+                        value={this.state.password}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            this.setState({ password: text });
+                            this.actualizarEstadoCampos(); // Actualizar el estado de campos completos
+                        }}
+                    />
+                    {this.state.passwordError && (
+                        <Text style={styles.errorMessage}>{this.state.passwordError}</Text>
+                    )}
 
-  
+                    {this.state.generalError && (
+                        <Text style={styles.errorMessage}>{this.state.generalError}</Text>
+                    )}
+
+                    <TouchableOpacity
+                        onPress={() => this.loguearUsuario(this.state.mail, this.state.password)}
+                        disabled={!this.state.allFieldsCompleted} // Deshabilitar el botón si no todos los campos están completos
+                    >
+                        <Text style={[styles.button, !this.state.allFieldsCompleted && styles.buttonDisabled]}>
+                            Iniciar sesión
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
     productswrapper:{

@@ -40,7 +40,7 @@ export default function MainNavigation() {
           name='Comments'
           component={Comments}
         
-        />
+        /> 
       </Stack.Navigator>
     </NavigationContainer>
   )
