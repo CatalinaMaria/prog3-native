@@ -25,6 +25,7 @@ export default class FormLogin extends Component {
 
         if (!email || !password) {
             this.setState({ generalError: 'Por favor, completa todos los campos.' });
+            this.setState({ allFieldsCompleted: false });
         } else {
             auth
                 .signInWithEmailAndPassword(email, password)
@@ -32,18 +33,13 @@ export default class FormLogin extends Component {
                     this.props.navegacion.navigate('TabNavigation');
                 })
                 .catch((error) => {
-                    switch (error.code) {
-                        case 'auth/invalid-email':
-                            this.setState({ emailError: 'El correo electrónico es incorrecto.' });
-                            break;
-                        case 'auth/user-not-found':
-                        case 'auth/wrong-password':
-                            this.setState({ passwordError: 'Contraseña incorrecta. Por favor, inténtalo de nuevo.' });
-                            break;
-                        default:
-                            this.setState({ generalError: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.' });
-                            console.log(error);
-                            break;
+                    if (error.code === 'auth/invalid-email') {
+                      this.setState({ emailError: 'El correo electrónico es incorrecto.' });
+                    } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                      this.setState({ passwordError: 'Contraseña incorrecta. Por favor, inténtalo de nuevo.' });
+                    } else {
+                      this.setState({ generalError: 'Error al iniciar sesión. Por favor, inténtalo de nuevo.' });
+                      
                     }
                 });
         }

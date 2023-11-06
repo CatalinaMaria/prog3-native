@@ -36,7 +36,10 @@ class FormRegister extends Component {
 
     registrarUsuario(name, email, password) {
         // Limpia los mensajes de error anteriores
-        this.setState({ error: null, emailError: null, passwordError: null });
+        this.setState({ 
+            error: null, 
+            emailError: null, 
+            passwordError: null });
     
         if (!name || !email || !password) {
             this.setState({ error: 'Por favor, completa todos los campos obligatorios.' });
