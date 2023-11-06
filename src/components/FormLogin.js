@@ -2,16 +2,17 @@ import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import React, { Component } from 'react'
 import { auth } from '../firebase/config'
 
+
 export default class FormLogin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             mail: '',
             password: '',
-            emailError: null, // Estado para el mensaje de error de correo electrónico
-            passwordError: null, // Estado para el mensaje de error de contraseña
-            allFieldsCompleted: false, // Estado para verificar campos completos
-            generalError: null, // Estado para mensajes de error generales
+            emailError: null, 
+            passwordError: null, 
+            allFieldsCompleted: false,
+            generalError: null, 
         };
     }
 

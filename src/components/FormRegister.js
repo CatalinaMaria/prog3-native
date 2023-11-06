@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
+import { Camera } from 'expo-camera';
 
 class FormRegister extends Component {
     constructor(props) {
@@ -16,6 +17,8 @@ class FormRegister extends Component {
             passwordError: null,
             allFieldsCompleted: false,
             rememberMe: false,
+            urlFoto: '',
+            paso1: true
         }
     }
     componentDidMount() {
@@ -32,7 +35,7 @@ class FormRegister extends Component {
     
 
     registrarUsuario(name, email, password) {
-        // Limpiar los mensajes de error anteriores
+        // Limpia los mensajes de error anteriores
         this.setState({ error: null, emailError: null, passwordError: null });
     
         if (!name || !email || !password) {
@@ -45,7 +48,7 @@ class FormRegister extends Component {
     
             authPromise
                 .then((user) => {
-                    // El usuario se ha registrado exitosamente
+                    // El usuario se ha registrado 
                     db.collection('users')
                         .add({
                             owner: this.state.mail,
@@ -58,7 +61,7 @@ class FormRegister extends Component {
                             console.error('Error al agregar el usuario a la base de datos:', error);
                         });
     
-                    // Redirigir al usuario a la página de inicio o realizar otras acciones necesarias
+                    // Redirigir al usuario a la página de inicio 
                     this.props.navigation.navigate('Home');
                 })
                 .catch((err) => {
@@ -205,7 +208,7 @@ const styles = StyleSheet.create({
     button: {
         width: 100,
         padding: 3,
-        color: 'white',
+        color: 'black',
         fontSize: 10,
         fontFamily: 'arial',
         width: 80
