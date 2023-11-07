@@ -142,7 +142,7 @@ class FormRegister extends Component {
                         style={styles.button}
                         onPress={() => this.props.navegacion.navigate('Login')}
                     >
-                        INICIA SESIÓN
+                     INICIA SESIÓN
                     </TouchableOpacity>
                     <TouchableOpacity
                      style={styles.rememberMeButton}
@@ -209,11 +209,12 @@ const styles = StyleSheet.create({
 
     },
     button: {
+        
         width: 100,
         padding: 3,
         color: 'black',
-        fontSize: 10,
-        fontFamily: 'arial',
+        fontSize: 12,
+        fontFamily: 'calibri',
         width: 80,
         
 

@@ -1,19 +1,23 @@
 import { Text, View, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
+import Post from '../components/Post'
+import firebase from 'firebase'
 
 export default class Profile extends Component {
   constructor(props){
     super(props)
     this.state = {
-      usuarios:[]
+      usuarios: [],
+      posts: [] 
     }
   }
 
   componentDidMount(){
-    db.collection('users').onSnapshot((docs)=>{
+    db.collection('users').where('owner', '==', auth.currentUser.email).onSnapshot((docs)=>{
       
       let arrDocs = []
+      //Recorre el array de documentos y sube un array de resultados con el id de cada documento
       docs.forEach((doc) => {
         arrDocs.push({
           id:doc.id,
@@ -21,11 +25,34 @@ export default class Profile extends Component {
         })
       })
 
+      //Guarda en el estado los datos del componente para despues renderizarlos
       this.setState({
         usuarios : arrDocs
       }, () => console.log(this.state.usuarios))
 
     })
+
+    db.collection('posts').where('owner', '==', auth.currentUser.email).onSnapshot((docs)=>{
+      
+      let arrDocs = []
+      //Recorre el array de documentos y sube un array de resultados con el id de cada documento
+      docs.forEach((doc) => {
+        arrDocs.push({
+          id:doc.id,
+          data: doc.data()
+        })
+      })
+      arrDocs.sort((a,b)=> b.data.createdAt - a.data.createdAt)
+      //Guarda en el estado los datos del componente para despues renderizarlos
+      this.setState({
+        posteos : arrDocs
+      }, () => console.log(this.state.posteos))
+
+    })
+  }
+
+  borrarPosts(){
+    //pendiente
   }
 
   logout(){
@@ -36,18 +63,33 @@ export default class Profile extends Component {
   render() {
     return (
       <View>
-        <Text>El email del usuario es:</Text>
-        {/* <View> */}
+        <Text>Tu perfil</Text>
+        <View>
           <FlatList
             data={this.state.usuarios}
             keyExtractor={(item)=> item.id.toString() }
             renderItem={ ( {item} ) => <View>
               <Text>{item.data.name}</Text>
+              <Text>{item.data.owner}</Text>
               <Text>{item.data.minibio}</Text>
               </View>
                }
-        />
-        {/* </View> */}
+          />
+        </View>
+        
+        <View>
+        <Text>Tus posteos</Text>
+        <Text>Cantidad de posteos: {this.state.posts.length}</Text>
+          <FlatList
+            data={this.state.posteos}
+            keyExtractor={(item)=> item.id.toString() }
+            renderItem={ ( {item} ) => 
+              <View>
+              <Post navigation={this.props.navigation} data={item.data} id={item.id}/>
+              </View>
+               }
+          />
+        </View>
         <View>
           <TouchableOpacity
           

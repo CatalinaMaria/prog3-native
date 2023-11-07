@@ -15,7 +15,7 @@ export default class FormDescripcionPost extends Component {
         <Text>Describe tu post</Text>
         <View>
             <TextInput
-            placeholder='Anhade aqui la descripcion de tu post'
+            placeholder='Agrega aqui la descripcion de tu post'
             onChangeText={(text)=> this.setState({
                 descripcionPost: text
             }) }

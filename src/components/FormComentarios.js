@@ -41,7 +41,7 @@ export default class FormComentarios extends Component {
             onPress={()=> this.enviarComentario(this.state.comentario)}
         >
             <Text>
-                Enviar
+                Comentar
             </Text>
         </TouchableOpacity>
       </View>

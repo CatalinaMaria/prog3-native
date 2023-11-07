@@ -4,6 +4,12 @@ import { db, auth } from '../firebase/config'
 import FormDescripcionPost from '../components/FormDescripcionPost'
 export default class NewPost extends Component {
 
+  constructor(props){
+    super(props)
+    this.state = {
+      descripcion:'',
+    }
+  }
 
   onSubmit({
     descripcion
@@ -13,7 +19,8 @@ export default class NewPost extends Component {
         owner: auth.currentUser.email,
         createdAt:Date.now(),
         descripcion:descripcion,
-        likes:[]
+        likes:[],
+        comentarios:[]
       }
     )
     .catch((e) => console.log(e))

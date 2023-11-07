@@ -21,8 +21,9 @@ export default class Comments extends Component {
   render() {
     return (
       <View>
-        <Text>Comments</Text>
+        <Text>Comentarios</Text>
         {
+            this.state.post !== null ?
             this.state.dataPost !== null ?
                 <FlatList
                     data={this.state.dataPost.comentarios}
@@ -32,6 +33,9 @@ export default class Comments extends Component {
                         <Text>{item.comentario}</Text>
                     </View> }
                 />
+            :
+            <Text>Aún no hay comentarios.</Text>
+
             :
             ''
         }
