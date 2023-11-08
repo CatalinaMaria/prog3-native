@@ -40,6 +40,7 @@ export default class Post extends Component {
         db
         .collection('posts')
         .doc(this.props.id)
+        .limit(6)
         .update({
             likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
         })
@@ -54,13 +55,20 @@ export default class Post extends Component {
     irAComentar(){
         this.props.navigation.navigate('Comments',{id: this.props.id})
     }
+    irAlPerfil(){
+        this.props.data.owner == auth.currentUser.email ?
+        this.props.navigation.navigate('Profile')
+        :
+        this.props.navigation.navigate('UserProfile', { user: this.props.data.owner })
+    }
 
     render() {
         return (
         <View >
+        <TouchableOpacity onPress={() => this.irAlPerfil()}>
         <Text>
             {this.props.data.owner}
-        </Text>
+        </Text> </TouchableOpacity>
             <Text>{this.props.data.descripcion}</Text>
             <View>
                  <Image
