@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
-import { Camera } from 'expo-camera';
+
 
 class FormRegister extends Component {
     constructor(props) {
@@ -12,6 +12,7 @@ class FormRegister extends Component {
             mail: '',
             password: '',
             minibio: '',
+            fotoPerfil:  '',
             error: null,
             emailError: null,
             passwordError: null,
@@ -58,6 +59,7 @@ class FormRegister extends Component {
                             createdAt: Date.now(),
                             name: this.state.name,
                             minibio: this.state.minibio,
+                            fotoPerfil: this.state.fotoPerfil,
                         })
                         .then((resp) => console.log(resp))
                         .catch((error) => {
@@ -123,6 +125,12 @@ class FormRegister extends Component {
                         value={this.state.minibio}
                         onChangeText={(text) => this.setState({ minibio: text })}
                     />
+                     <TextInput
+                        style={styles.control}
+                        placeholder="Pega la URL de tu foto de perfil"
+                        value={this.state.fotoPerfil}
+                        onChangeText={(text) => this.setState({ fotoPerfil: text })}
+                    />
     
                     <TextInput
                         style={styles.control}
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
         border: 5,
         fontFamily: 'calibri',
         fontSize: 15,
-        height: 380,
+        height: 450,
         width: 350,
 
 

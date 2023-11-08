@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, FlatList,Image  } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
 import Post from '../components/Post'
@@ -70,6 +70,10 @@ export default class Profile extends Component {
             keyExtractor={(item)=> item.id.toString() }
             renderItem={ ( {item} ) => <View>
               <Text>{item.data.name}</Text>
+              <Image
+                source={{ uri: item.data.fotoPerfil }}
+                style={{ width: 200, height: 200 }}
+/>
               <Text>{item.data.owner}</Text>
               <Text>{item.data.minibio}</Text>
               </View>

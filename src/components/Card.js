@@ -6,8 +6,11 @@ export default function Card(props) {
   return (
     <View>
 
+        {/* Modo de uso si la imagen es local 
+        source={require('../../assets/zapatos.jpg')}
+        */}
         <Image
-            
+            style={styles.imgCard}
             source={
                 {
                     uri: props.data.img
@@ -20,3 +23,8 @@ export default function Card(props) {
   )
 }
 
+const styles = StyleSheet.create({
+    imgCard:{
+        height:150
+    }
+})

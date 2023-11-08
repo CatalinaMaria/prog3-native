@@ -5,33 +5,33 @@ import Card from '../components/Card'
 import { db } from '../firebase/config'
 import Post from '../components/Post'
 
-
 export default class Home extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state ={
+        this.state = {
             posteos: []
         }
-    }  
+    }
 
-    componentDidMount(){
+    componentDidMount() {
         db.collection('posts')
-        .where('likes', '>', 1)
-        .orderBy('likes', 'desc')
-        .limit(6)
-        .onSnapshot(docs => {
-            let arrPosteos = []
-            docs.forEach(doc => {
-                arrPosteos.push({
-                    id: doc.id,
-                    data: doc.data()
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(docs => {
+                let arrPosteos = []
+                docs.forEach(doc => {
+                    const posteoData = doc.data();
+                    const owner = posteoData.owner; // Obtén el propietario del post desde el campo 'owner'
+                    arrPosteos.push({
+                        id: doc.id,
+                        data: posteoData,
+                        owner: owner // Pasa el propietario al componente Post
+                    })
+                })
+
+                this.setState({
+                    posteos: arrPosteos
                 })
             })
-
-            this.setState({
-               posteos: arrPosteos 
-            })
-        })
     }
 
     render() {
@@ -39,12 +39,22 @@ export default class Home extends Component {
             <View>
                 <FlatList
                     data={this.state.posteos}
-                    keyExtractor={(item)=> item.id.toString()}
-                    renderItem={({ item })=> <Post navigation={this.props.navigation} data={item.data} id={item.id}/>}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <Post
+                            navigation={this.props.navigation}
+                            data={item.data}
+                            id={item.id}
+                            owner={item.owner}
+                             // Pasa el propietario al componente Post
+                        />
+                    )}
                 />
-                
             </View>
         )
     }
 }
+
+    
+
 
