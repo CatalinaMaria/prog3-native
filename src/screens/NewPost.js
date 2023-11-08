@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
 import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
 import FormDescripcionPost from '../components/FormDescripcionPost'
@@ -14,7 +14,6 @@ export default class NewPost extends Component {
     }
   }
 
-
   onSubmit({
     descripcion,
     fotoUrl
@@ -28,9 +27,8 @@ export default class NewPost extends Component {
         likes:[]
       }
     )
-    .then(()=> this.props.navigation.navigate('Home'))
+    .then(() => this.props.navigation.navigate('Home'))
     .catch((e) => console.log(e))
-
   }
 
   actualizarDescripcion(text){
@@ -46,33 +44,33 @@ export default class NewPost extends Component {
     })
   }
 
-
-
   render() {
     return (
       <View style={styles.container}>
-        <Text>NewPost</Text>
+        <Text style={styles.text}>New Post</Text>
         {
           this.state.paso1 ?
-            <CamaraPost
-              actualizarFotourl= {(url)=> this.actualizarFotourl(url)}
-            />
+            <View style={styles.cameraContainer}>
+              <CamaraPost
+                actualizarFotourl={(url) => this.actualizarFotourl(url)}
+              />
+            </View>
           :
           <>
-            <FormDescripcionPost
-            // onSubmit={(obj)=> this.onSubmit(obj)}
-            actualizarDescripcion={(descripcion)=> this.actualizarDescripcion(descripcion)}
-            estadoDescripcion = {this.state.descripcion}
+            <TextInput
+              style={styles.descriptionInput}
+              placeholder="Descripción"
+              onChangeText={(descripcion) => this.actualizarDescripcion(descripcion)}
+              value={this.state.descripcion}
             />
             <TouchableOpacity
-              onPress={()=> this.onSubmit({
-                  descripcion: this.state.descripcion,
-                  fotoUrl: this.state.urlFoto
+              style={styles.submitButton}
+              onPress={() => this.onSubmit({
+                descripcion: this.state.descripcion,
+                fotoUrl: this.state.urlFoto
               })}
             >
-                <Text>
-                    Enviar
-                </Text>
+              <Text style={styles.submitButtonText}>Enviar</Text>
             </TouchableOpacity>
           </>
         }
@@ -80,8 +78,66 @@ export default class NewPost extends Component {
     )
   }
 }
+
 const styles = StyleSheet.create({
-  container:{
-    flex:1
-  }
-})
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: 'blue',
+    padding: 12,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  input: {
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 16,
+  },
+  cameraContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imagePreview: {
+    width: 200,
+    height: 200,
+    marginBottom: 16,
+  },
+  descriptionInput: {
+    flex: 1,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 16,
+  },
+  submitButton: {
+    backgroundColor: 'blue',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
