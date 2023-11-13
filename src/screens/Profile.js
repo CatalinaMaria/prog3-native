@@ -17,7 +17,6 @@ export default class Profile extends Component {
     db.collection('users').where('owner', '==', auth.currentUser.email).onSnapshot((docs)=>{
       
       let arrDocs = []
-      //Recorre el array de documentos y sube un array de resultados con el id de cada documento
       docs.forEach((doc) => {
         arrDocs.push({
           id:doc.id,
@@ -25,7 +24,6 @@ export default class Profile extends Component {
         })
       })
 
-      //Guarda en el estado los datos del componente para despues renderizarlos
       this.setState({
         usuarios : arrDocs
       }, () => console.log(this.state.usuarios))
@@ -35,7 +33,6 @@ export default class Profile extends Component {
     db.collection('posts').where('owner', '==', auth.currentUser.email).onSnapshot((docs)=>{
       
       let arrDocs = []
-      //Recorre el array de documentos y sube un array de resultados con el id de cada documento
       docs.forEach((doc) => {
         arrDocs.push({
           id:doc.id,
@@ -43,18 +40,30 @@ export default class Profile extends Component {
         })
       })
       arrDocs.sort((a,b)=> b.data.createdAt - a.data.createdAt)
-      //Guarda en el estado los datos del componente para despues renderizarlos
       this.setState({
         posteos : arrDocs
       }, () => console.log(this.state.posteos))
 
     })
+
+    
   }
 
-  borrarPosts(){
-    //pendiente
+  componentDidUpdate(){
+    this.borrarPost()
   }
-
+  
+    borrarPost(postId) {
+    db.collection('posts')
+        .doc(postId)
+        .delete()
+        .then(() => {
+            console.log('Post eliminado correctamente');
+        })
+        .catch((error) => {
+            console.error('Error al eliminar el post:', error);
+        })}
+  
   logout(){
     auth.signOut()
     this.props.navigation.navigate('Register')
@@ -85,15 +94,25 @@ export default class Profile extends Component {
         <View style={styles.posts}>
           <Text style={styles.postsTitle}>Tus posteos</Text>
           <Text>Cantidad de posteos: {this.state.posts.length}</Text>
+          <View
+          style={styles.posts}
+          >
           <FlatList
             data={this.state.posteos}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <View style={styles.post}>
-                <Post navigation={this.props.navigation} data={item.data} id={item.id} />
+              <View style={styles.post}> 
+              
+              <TouchableOpacity onPress={() => this.borrarPost(item.id)}>
+                    <Text>Borrar</Text>
+                </TouchableOpacity>
+              
+                <Post  navigation={this.props.navigation} data={item.data} id={item.id} />
+              
+               
               </View>
             )}
-          />
+          /></View>
         </View>
   
         <View style={styles.logout}>
@@ -117,6 +136,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     alignItems: 'center',
     padding: 20,
+    flex:1
 
   },
   mail: {
@@ -128,7 +148,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 200,
     height: 200,
-    borderRadius: 100, // Hace la imagen redondeada
+    borderRadius: 100, 
   },
   username: {
     fontSize: 25,
@@ -143,8 +163,8 @@ const styles = StyleSheet.create({
 
   },
   posts: {
-    width: '100%',
-    padding: 20,
+    flex: 2,
+    
   },
   postsTitle: {
     fontSize: 35,

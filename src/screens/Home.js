@@ -20,11 +20,11 @@ export default class Home extends Component {
                 let arrPosteos = []
                 docs.forEach(doc => {
                     const posteoData = doc.data();
-                    const owner = posteoData.owner; // Obtén el propietario del post desde el campo 'owner'
+                    const owner = posteoData.owner;
                     arrPosteos.push({
                         id: doc.id,
                         data: posteoData,
-                        owner: owner // Pasa el propietario al componente Post
+                        owner: owner 
                     })
                 })
 
@@ -36,25 +36,32 @@ export default class Home extends Component {
 
     render() {
         return (
-            <View>
-                <FlatList
+            <View style={styles.posteos}>
+                <FlatList 
                     data={this.state.posteos}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <Post
-                            navigation={this.props.navigation}
-                            data={item.data}
-                            id={item.id}
-                            owner={item.owner}
-                             // Pasa el propietario al componente Post
-                        />
+                        navigation={this.props.navigation}
+                        data={item.data}
+                        id={item.id}
+                        owner={item.owner} 
+                    />
                     )}
                 />
+
             </View>
         )
     }
 }
 
+const styles = StyleSheet.create({
+    posteos: {
+        flex: 1,
+    
+    }
+
+})
     
 
 
