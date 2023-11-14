@@ -115,10 +115,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   imagePreview: {
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 500,
     marginBottom: 16,
   },
   descriptionInput: {

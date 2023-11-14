@@ -29,18 +29,20 @@ export default class Comments extends Component {
             <View style={styles.container}>
                 <Text style={styles.title}>Comentarios</Text>
                 {this.state.dataPost !== null && this.state.dataPost.comentarios !== undefined ? (
-                    <FlatList
-                        data={this.state.dataPost.comentarios
-                            .slice()
-                            .sort((a, b) => b.createdAt - a.createdAt)}
-                        keyExtractor={(item) => item.createdAt.toString()}
-                        renderItem={({ item }) => (
-                            <View style={styles.commentContainer}>
-                                <Text style={styles.ownerText}>{item.owner}</Text>
-                                <Text style={styles.commentText}>{item.comentario}</Text>
-                            </View>
-                        )}
-                    />
+                    <View style={styles.commentsContainer}>
+                        <FlatList
+                            data={this.state.dataPost.comentarios
+                                .slice()
+                                .sort((a, b) => b.createdAt - a.createdAt)}
+                            keyExtractor={(item) => item.createdAt.toString()}
+                            renderItem={({ item }) => (
+                                <View style={styles.commentContainer}>
+                                    <Text style={styles.ownerText}>{item.owner}</Text>
+                                    <Text style={styles.commentText}>{item.comentario}</Text>
+                                </View>
+                            )}
+                        />
+                    </View>
                 ) : (
                     <Text>Aún no hay comentarios.</Text>
                 )}
@@ -55,21 +57,28 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         backgroundColor: '#9fc1ad',
-
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
     },
+    commentsContainer: {
+        backgroundColor: '#5F866F',
+        borderRadius: 10,
+        padding: 10,
+        alignSelf: 'center',
+        width: '70%',
+    },
     commentContainer: {
         marginBottom: 10,
     },
     ownerText: {
         fontWeight: 'bold',
+        color: 'black',
         marginBottom: 5,
     },
     commentText: {
-        marginBottom: 10,
+        color: 'black',
     },
 });

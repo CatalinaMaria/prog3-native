@@ -39,7 +39,6 @@ export default class Home extends Component {
             <View style={styles.posteos}>
                 <FlatList 
                     data={this.state.posteos}
-                    style={styles.card}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <Post
@@ -64,10 +63,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#9fc1ad',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 10,
     },
-    card:{
-        marginTop: 20,
-    }
+    
     
 })
     

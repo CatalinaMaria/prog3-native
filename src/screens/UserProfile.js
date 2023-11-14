@@ -11,7 +11,8 @@ export default class UserProfile extends Component {
     }
 
     componentDidMount() {
-        const userId = this.props.route.params.userId;
+        const userId = this.props.route.params.user;
+        console.log("UserId:", userId);
 
         db.collection('users')
             .doc(userId)

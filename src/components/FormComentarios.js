@@ -33,14 +33,17 @@ export default class FormComentarios extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TextInput
-                    placeholder='Agrega tu comentario'
-                    keyboardType='default'
-                    onChangeText={(text) => this.setState({ comentario: text })}
-                    value={this.state.comentario}
-                    multiline={true}
-                    numberOfLines={4}
-                />
+                <View style={styles.commentInputContainer}>
+                    <TextInput
+                        placeholder='Agrega tu comentario'
+                        keyboardType='default'
+                        onChangeText={(text) => this.setState({ comentario: text })}
+                        value={this.state.comentario}
+                        multiline={true}
+                        numberOfLines={4}
+                        style={styles.commentInput}
+                    />
+                </View>
                 <TouchableOpacity
                     onPress={() => this.enviarComentario()}
                     disabled={!this.state.comentario.trim()} // Deshabilita el botón si el comentario está vacío
@@ -56,13 +59,22 @@ export default class FormComentarios extends Component {
 const styles = StyleSheet.create({
     container: {
         marginVertical: 10,
+        width: '70%',
+        alignSelf: 'center',
+    },
+    commentInputContainer: {
+        borderWidth: 2,
+        borderColor: '#5F866F', // Color del marco verde oscuro
+        borderRadius: 5,
+        marginBottom: 10,
+    },
+    commentInput: {
+        padding: 10,
     },
     button: {
-        marginTop: 10,
         backgroundColor: '#3498db',
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
     },
 });
-

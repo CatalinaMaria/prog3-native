@@ -9,7 +9,8 @@ export default class Post extends Component {
         super(props);
         this.state = {
             likes: 0,
-            estaMiLike: false
+            estaMiLike: false,
+            comments: 0,
         };
     }
 
@@ -18,6 +19,7 @@ export default class Post extends Component {
         this.setState({
             estaMiLike: validacionLike
         });
+       
     }
 
     borrarPost() {
@@ -64,22 +66,22 @@ export default class Post extends Component {
         this.props.navigation.navigate('Comments', { id: this.props.id });
     }
 
-    irAlPerfil(){
-        if (this.props.owner === auth.currentUser.email) {
+    irAlPerfil(owner) {
+        if (owner === auth.currentUser.email) {
             this.props.navigation.navigate('Profile');
         } else {
-            this.props.navigation.navigate('UserProfile', {
-                userId: this.props.owner 
-            });
+            this.props.navigation.navigate('UserProfile', { user: owner });
         }
     }
+    
 
     render() {
         return (
             <View style={styles.posts}>
-                <TouchableOpacity onPress={() => this.irAlPerfil()}>
-                    <Text style={styles.ownerName}>{this.props.data.owner}</Text>
+                <TouchableOpacity onPress={() => this.irAlPerfil(this.props.data.owner)}>
+                 <Text style={styles.ownerName}>{this.props.data.owner}</Text>
                 </TouchableOpacity>
+
                 <Text style={styles.description}>{this.props.data.descripcion}</Text>
                 <View>
                     <Image
@@ -103,7 +105,7 @@ export default class Post extends Component {
                 </View>
                 <View>
                     <TouchableOpacity onPress={() => this.irAComentar()}>
-                        <Text>Comentar</Text>
+                        <Text style={styles.commentText}> {this.state.comments} Comentar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -114,10 +116,16 @@ export default class Post extends Component {
 const styles = StyleSheet.create({
     img:{
         width: '100%',
-        height: 200
+        height: 200,
+        borderRadius: 10, 
+        marginBottom: 10,
     },
     posts:{
-       flex: 1
+       flex: 1,
+       backgroundColor: '#fff',
+       padding: 15,
+       borderRadius: 10,
+       marginBottom: 20, 
     },
     ownerName: {
         fontSize: 16,
@@ -129,5 +137,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color:'555',
         marginBottom: 10,
+    },
+    commentText: {
+        color: '#3498db',
+        fontSize: 16,
+        fontWeight: 'bold',
+        padding: 15,
     },
 });
