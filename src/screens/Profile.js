@@ -132,6 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: '#9fc1ad',
+
   },
   profileInfo: {
     alignItems: 'center',

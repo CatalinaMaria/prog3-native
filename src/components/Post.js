@@ -78,9 +78,9 @@ export default class Post extends Component {
         return (
             <View style={styles.posts}>
                 <TouchableOpacity onPress={() => this.irAlPerfil()}>
-                    <Text>{this.props.data.owner}</Text>
+                    <Text style={styles.ownerName}>{this.props.data.owner}</Text>
                 </TouchableOpacity>
-                <Text>{this.props.data.descripcion}</Text>
+                <Text style={styles.description}>{this.props.data.descripcion}</Text>
                 <View>
                     <Image
                         source={{ uri: this.props.data.fotoUrl ? this.props.data.fotoUrl : '' }}
@@ -118,5 +118,16 @@ const styles = StyleSheet.create({
     },
     posts:{
        flex: 1
-    }
+    },
+    ownerName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        color: '#333',
+    },
+    description: {
+        fontSize: 14,
+        color:'555',
+        marginBottom: 10,
+    },
 });
