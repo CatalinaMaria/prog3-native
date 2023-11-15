@@ -24,6 +24,7 @@ const ChangePasswordScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.container2}>
       <Text style={styles.title}>Cambiar Contraseña</Text>
       <TextInput
         placeholder="Contraseña actual"
@@ -44,6 +45,7 @@ const ChangePasswordScreen = ({ navigation }) => {
         handleChangePassword(); }} style={styles.button}>
         <Text>Cambiar Contraseña</Text>
         </TouchableOpacity>
+        </View>
     </View>
   );
 };
@@ -53,6 +55,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: 'center',
+    backgroundColor: '#9fc1ad',
+  },
+  container2:{
+    marginVertical: 10,
+    width: '50%',
+    alignSelf: 'center',
   },
   title: {
     fontSize: 24,
@@ -60,14 +68,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    height: 40,
+    width: '100%',
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
     marginBottom: 16,
-    paddingHorizontal: 8,
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#5F866F',
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',

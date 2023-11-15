@@ -24,7 +24,7 @@ export default class FormSearch extends Component {
           name="busqueda"
           onChangeText={(text) => this.controlarCambios(text)}
         />
-        <Button
+        <Button style={styles.button}
           title="Buscar"
           onPress={(evento) => this.evitarSubmit(evento)}
         />
@@ -48,4 +48,11 @@ const styles = StyleSheet.create({
       padding: 10,
       width: '100%',
     },
+    button: {
+      backgroundColor: '#5F866F',
+      padding: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+      marginBottom: 10,
+  },
   });

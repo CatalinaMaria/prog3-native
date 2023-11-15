@@ -110,7 +110,7 @@ export default class Profile extends Component {
         console.log("Botón presionado");
         this.props.navigation.navigate('ChangePasswordScreen');
         }}>
-        <Text>Ir a Cambiar Contraseña</Text>
+        <Text>Cambiar Contraseña</Text>
         </TouchableOpacity>
         </View>
 

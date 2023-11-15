@@ -93,8 +93,15 @@ export default class FormLogin extends Component {
                         onPress={() => this.loguearUsuario(this.state.mail, this.state.password)}
                         disabled={!this.state.allFieldsCompleted} // Deshabilitar el botón si no todos los campos están completos
                     >
+                        <Text>
+                        ¿Aún no tienes una cuenta? 
+                        <TouchableOpacity
+                            onPress={()=> this.props.navigation.navigate('Register')}
+                         > Registrarse</TouchableOpacity>
+                        </Text>
+
                         <Text style={[styles.button, !this.state.allFieldsCompleted && styles.buttonDisabled]}>
-                            Iniciar sesión
+                            INICIAR SESIÓN
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -151,11 +158,11 @@ const styles = StyleSheet.create({
     button:{
         width: 100,
         padding: 3,
-        color: 'white',
-        fontSize: 10,
-        fontFamily: 'arial',
-        width:80
-
+        color: 'black',
+        fontSize: 17,
+        fontFamily: 'calibri',
+        width:'100%',
+        fontWeight: 'bold'
     }
 })
 

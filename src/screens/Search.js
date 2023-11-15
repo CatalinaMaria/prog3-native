@@ -92,13 +92,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingLeft: 10,
     },
-    button: {
-        backgroundColor: '#3498db',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginBottom: 10,
-    },
     mensaje: {
         color: 'red',
         marginBottom: 10,

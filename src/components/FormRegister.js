@@ -204,8 +204,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         height: 450,
         width: 350,
-
-
     },
     productstitle: {
         fontSize: 40,
@@ -226,15 +224,12 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        
-        width: 100,
         padding: 3,
         color: 'black',
-        fontSize: 12,
+        fontSize: 17,
         fontFamily: 'calibri',
-        width: 80,
-        
-
+        width: '100%',
+        fontWeight: 'bold'
     },
     errorMessage: {
         color: 'red',

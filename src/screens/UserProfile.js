@@ -45,13 +45,13 @@ export default class UserProfile extends Component {
 
     render() {
         return (
-            <View>
-                <View>
+            <View style={styles.container}>
+                <View style={styles.profileInfo}>
                     <FlatList
                         data={this.state.usuarios}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => <View>
-                            <Text>Usuario: {item.data.name}</Text>
+                            <Text style={styles.username}>{item.data.name}</Text>
                             {item.data.fotoPerfil != '' ?
                                 <Image
                                     source={item.data.fotoPerfil}
@@ -61,9 +61,9 @@ export default class UserProfile extends Component {
                                 :
                                 ''
                             }
-                            <Text>Email: {item.data.owner}</Text>
+                            <Text style={styles.mail}>{item.data.owner}</Text>
                             {item.data.minibio ?
-                                <Text>Minibio: {item.data.minibio}</Text>
+                                <Text style={styles.minibio}>{item.data.minibio}</Text>
                                 :
                                 ''
                             }
@@ -71,14 +71,14 @@ export default class UserProfile extends Component {
                         }
                     />
                 </View>
-                <View>
-                    <Text>posteos de {this.props.route.params.user} </Text>
-                    <Text>Cantidad: {this.state.posteos.length} </Text>
+                <View style={styles.posts}>
+                    <Text style={styles.postsTitle}>Posteos de {this.props.route.params.user} </Text>
+                    <Text style={styles.cantidadPosteos}>Cantidad: {this.state.posteos.length} </Text>
                     <FlatList
                         data={this.state.posteos}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) =>
-                            <View>
+                            <View style={styles.post}>
                                 <Post navigation={this.props.navigation} data={item.data} id={item.id} />
                             </View>
                         }
@@ -90,8 +90,51 @@ export default class UserProfile extends Component {
 }
 
 const styles = StyleSheet.create({
-    signoutBtn: {
-        backgroundColor: 'red',
-        padding: 16
-    }
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundColor: '#9fc1ad',
+      },
+      profileInfo: {
+        alignItems: 'center',
+        padding: 10,
+      },
+      username: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
+      mail: {
+        fontSize: 14,
+        color: 'black',
+        textAlign: 'center',
+      },
+      minibio: {
+        fontSize: 14,
+        color: 'balck',
+        textAlign: 'center',
+      },
+      posts: {
+        flex: 2,
+        padding: 10,
+      },
+      postsTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        fontFamily: 'calibri',
+        marginBottom: 15,
+      },
+      cantidadPosteos: {
+        marginBottom: 15,
+      },
+      post: {
+        marginBottom: 15,
+      },
+      img:{
+        width: 200,
+        height: 200,
+        borderRadius: 100,
+      }
+   
 })

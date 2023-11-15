@@ -76,15 +76,15 @@ export default class Post extends Component {
         return (
             <View style={styles.posts}>
                 <TouchableOpacity onPress={() => this.irAlPerfil()}>
-                <Text style={styles.ownerText}>{this.props.data.owner}</Text>
+                <Text style={styles.ownerName}>{this.props.data.owner}</Text>
                 </TouchableOpacity>
-                <Text style={styles.description}>{data.descripcion}</Text>
                 <View>
                     <Image
                         source={{ uri: data.fotoUrl ? data.fotoUrl : '' }}
                         style={styles.img}
                         resizeMode='contain'
                     />
+                    <Text style={styles.description}>{data.descripcion}</Text>
                     <Text>
                         {data.likes.length}
                     </Text>
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     commentText: {
-        color: '#3498db',
+        color: '#5F866F',
         fontSize: 16,
         fontWeight: 'bold',
         padding: 15,
