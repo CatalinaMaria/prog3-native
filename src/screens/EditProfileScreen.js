@@ -1,88 +1,116 @@
-// EditProfileScreen.js
-import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { auth, db } from '../firebase/config';
 
-export default class EditProfileScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      newName: '',
-      newMinibio: '',
-      newProfileImage: '',
-    };
-  }
+const EditProfileScreen = ({ navigation }) => {
+  const [name, setName] = useState('');
+  const [fotoPerfil, setFotoPerfil] = useState('');
+  const [minibio, setMinibio] = useState('');
 
-  guardarCambios() {
-    const userId = auth.currentUser.uid;
-    db.collection('users')
-      .doc(userId)
-      .update({
-        name: this.state.newName,
-        minibio: this.state.newMinibio,
-        fotoPerfil: this.state.newProfileImage,
-      })
-      .then(() => {
-        console.log('Cambios guardados exitosamente');
-        this.props.navigation.goBack();
-      })
-      .catch((error) => {
-        console.error('Error al guardar cambios:', error);
+  useEffect(() => {
+    const unsubscribe = db.collection('users')
+      .where('owner', '==', auth.currentUser.email)
+      .onSnapshot((docs) => {
+        docs.forEach((doc) => {
+          const userData = doc.data();
+          setName(userData.name);
+          setFotoPerfil(userData.fotoPerfil);
+          setMinibio(userData.minibio);
+        });
       });
-  }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Editar Perfil</Text>
+    return () => unsubscribe(); 
+  }, []);
+
+  const handleSaveChanges = async () => {
+    try {
+      await db.collection('users')
+        .where('owner', '==', auth.currentUser.email)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.update({
+              name: name,
+              fotoPerfil: fotoPerfil,
+              minibio: minibio,
+            });
+          });
+        });
+
+      Alert.alert('Cambios guardados con éxito');
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error al guardar cambios:', error);
+      Alert.alert('Error al guardar cambios', error.message);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Editar Perfil</Text>
+      <View style={styles.profileInfo}>
+        <Image source={{ uri: fotoPerfil }} style={styles.profileImage} />
         <TextInput
+          placeholder="Nombre de usuario"
           style={styles.input}
-          placeholder="Nuevo nombre de usuario"
-          value={this.state.newName}
-          onChangeText={(text) => this.setState({ newName: text })}
+          value={name}
+          onChangeText={(text) => setName(text)}
         />
         <TextInput
+          placeholder="URL de la foto de perfil"
           style={styles.input}
-          placeholder="Nueva mini bio"
-          value={this.state.newMinibio}
-          onChangeText={(text) => this.setState({ newMinibio: text })}
+          value={fotoPerfil}
+          onChangeText={(text) => setFotoPerfil(text)}
         />
         <TextInput
+          placeholder="Minibio"
           style={styles.input}
-          placeholder="Nueva URL de foto de perfil"
-          value={this.state.newProfileImage}
-          onChangeText={(text) => this.setState({ newProfileImage: text })}
+          value={minibio}
+          onChangeText={(text) => setMinibio(text)}
         />
-        <TouchableOpacity style={styles.button} onPress={() => this.guardarCambios()}>
+        <TouchableOpacity onPress={handleSaveChanges} style={styles.button}>
           <Text>Guardar Cambios</Text>
         </TouchableOpacity>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    padding: 16,
     justifyContent: 'center',
     backgroundColor: '#9fc1ad',
   },
   title: {
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 16,
+  },
+  profileInfo: {
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    marginBottom: 16,
   },
   input: {
-    backgroundColor: 'white',
     width: '80%',
-    padding: 10,
-    marginBottom: 20,
+    borderColor: 'gray',
+    borderWidth: 1,
     borderRadius: 8,
+    padding: 8,
+    marginBottom: 16,
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 8,
+    backgroundColor: '#5F866F',
+    padding: 12,
+    borderRadius: 5,
+    alignItems: 'center',
   },
 });
+
+export default EditProfileScreen;
