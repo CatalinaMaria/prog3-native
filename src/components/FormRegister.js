@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
-
+import CamaraPost from "../components/CameraPost"
 
 class FormRegister extends Component {
     constructor(props) {
@@ -88,13 +88,21 @@ class FormRegister extends Component {
         const { name, mail, password } = this.state;
         const allFieldsCompleted = name.length > 0 && mail.length > 0 && password.length > 0;
         this.setState({ allFieldsCompleted });
-    }    
+    }  
+    actualizarFotourl(url){
+        this.setState({
+          urlFoto: url,
+          paso1: false
+        })
+      }  
 
     render() {
         return (
             <View style={styles.productswrapper}>
                 <Text style={styles.productstitle}>Regístrate en mi app</Text>
                 <View style={styles.registro}>
+
+                               
                     <TextInput
                         style={styles.control}
                         placeholder="Dinos tu nombre"
@@ -142,7 +150,7 @@ class FormRegister extends Component {
                             this.setState({ password: text });
                             this.actualizarEstadoCamposObligatorios();
                         }}
-                    />
+                    /> 
                     <Text style={styles.errorMessage}>{this.state.passwordError}</Text>
     
                     <Text>¿Ya estás registrado?</Text>
@@ -160,7 +168,7 @@ class FormRegister extends Component {
                     {this.state.rememberMe ? '✓' : ' '}
                      Recuérdame
                     </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> 
 
                     {this.state.allFieldsCompleted && (
                         <TouchableOpacity
@@ -171,6 +179,7 @@ class FormRegister extends Component {
                             <Text style={styles.button}>Regístrame</Text>
                         </TouchableOpacity>
                     )}
+                
                 </View>
             </View>
         );

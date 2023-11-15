@@ -1,86 +1,82 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { db } from '../firebase/config';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import FormSearch from '../components/FormSearch';
+import { db, auth } from '../firebase/config';
 
 export default class Search extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            busqueda: '',
-            resultados: [],
-            mensaje: '',
-        };
-    }
-
-    buscarUsuarios = async () => {
-        const { busqueda } = this.state;
-
-        if (!busqueda.trim()) {
-            return;
-        }
-
-        try {
-            const snapshot = await db
-                .collection('users')
-                .where('owner', '==', busqueda) 
-                .get();
-
-            const resultados = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                data: doc.data(),
-            }));
-
-            if (resultados.length > 0) {
-                this.setState({
-                    resultados,
-                    mensaje: '',
-                });
-            } else {
-                this.setState({
-                    resultados: [],
-                    mensaje: 'El mail/username no existe.',
-                });
-            }
-        } catch (error) {
-            console.error('Error al buscar usuarios:', error);
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      usuarios: [],
+      backup: [],
+      valor: ''
     };
+  }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <TextInput
-                    placeholder='Buscar por mail'
-                    onChangeText={(text) => this.setState({ busqueda: text })}
-                    value={this.state.busqueda}
-                    style={styles.input}
-                />
-                <TouchableOpacity onPress={this.buscarUsuarios} style={styles.button}>
-                    <Text>Buscar</Text>
-                </TouchableOpacity>
+  componentDidMount() {
+    db.collection('users').onSnapshot((docs) => {
+      let usuarios = [];
+      docs.forEach((doc) => {
+        usuarios.push({ id: doc.id, data: doc.data() });
+      });
+      this.setState({ usuarios, backup: usuarios });
+    });
+  }
 
-                {this.state.mensaje ? <Text style={styles.mensaje}>{this.state.mensaje}</Text> : null}
+  filtrarUsuarios(name) {
+    let usuariosFiltrados = this.state.backup.filter((elm) => {
+      const lowercaseName = elm.data.name ? elm.data.name.toLowerCase() : '';
+      const lowercaseOwner = elm.data.owner ? elm.data.owner.toLowerCase() : '';
+  
+      return (
+        lowercaseName.includes(name.toLowerCase()) ||
+        lowercaseOwner.includes(name.toLowerCase())
+      );
+    });
+  
+    this.setState({
+      usuarios: usuariosFiltrados,
+    });
+  }
+  
+  actualizarInput(valor) {
+    this.setState({
+      valor: valor
+    });
+  }
 
-                <FlatList
-                    data={this.state.resultados}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={() =>
-                                this.props.navigation.navigate('UserProfile', {
-                                    userId: item.id,
-                                })
-                            }
-                            style={styles.resultadoItem}
-                        >    <Text>{item.data.name}</Text> 
-                            <Text>{item.data.owner}</Text>
-                            
-                        </TouchableOpacity>
-                    )}
-                />
-            </View>
-        );
-    }
+  irAlPerfil(owner) {
+    owner == auth.currentUser.email ?
+      this.props.navigation.navigate('MyProfile')
+      :
+      this.props.navigation.navigate('UserProfile', { user: owner })
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <FormSearch filtrarUsuarios={(nombre) => this.filtrarUsuarios(nombre)} actualizarInput={(valor) => this.actualizarInput(valor)} />
+        {this.state.valor != '' ? (
+          this.state.usuarios.length != 0 ?
+            <FlatList
+              data={this.state.usuarios}
+              renderItem={({ item }) =>
+                <View style={styles.usuarioItem}>
+                  <TouchableOpacity onPress={() => this.irAlPerfil(item.data.owner)}>
+                    <Text style={styles.userName}>{item.data.name}</Text>
+                    <Text style={styles.userOwner}>{item.data.owner}</Text>
+                  </TouchableOpacity>
+                </View>}
+              keyExtractor={(item) => item.id.toString()}
+            />
+            :
+            <Text style={styles.text}>No se han encontrado resultados</Text>
+        ) : (
+          <Text style={styles.text}>Busca un usuario</Text>
+        )}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -88,7 +84,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#9fc1ad',
-
     },
     input: {
         height: 40,

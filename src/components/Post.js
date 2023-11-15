@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { db, auth } from '../firebase/config';
 import firebase from 'firebase';
 
 export default class Post extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             likes: 0,
             estaMiLike: false,
-            comments: 0,
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const validacionLike = this.props.data.likes.includes(auth.currentUser.email);
         this.setState({
             estaMiLike: validacionLike
         });
-       
     }
 
     borrarPost() {
@@ -34,7 +32,7 @@ export default class Post extends Component {
             });
     }
 
-    like(){
+    like() {
         db.collection('posts')
             .doc(this.props.id)
             .update({
@@ -48,7 +46,7 @@ export default class Post extends Component {
             .catch((err) => console.log(err));
     }
 
-    unlike(){
+    unlike() {
         db.collection('posts')
             .doc(this.props.id)
             .update({
@@ -62,35 +60,33 @@ export default class Post extends Component {
             .catch((err) => console.log(err));
     }
 
-    irAComentar(){
+    irAComentar() {
         this.props.navigation.navigate('Comments', { id: this.props.id });
     }
 
-    irAlPerfil(owner) {
-        if (owner === auth.currentUser.email) {
-            this.props.navigation.navigate('Profile');
-        } else {
-            this.props.navigation.navigate('UserProfile', { user: owner });
-        }
-    }
-    
+    irAlPerfil() {
+        this.props.data.owner == auth.currentUser.email
+          ? this.props.navigation.navigate('Profile')
+          : this.props.navigation.navigate('UserProfile', { user: this.props.data.owner });
+      }
 
     render() {
+        const { data } = this.props;
+
         return (
             <View style={styles.posts}>
-                <TouchableOpacity onPress={() => this.irAlPerfil(this.props.data.owner)}>
-                 <Text style={styles.ownerName}>{this.props.data.owner}</Text>
+                <TouchableOpacity onPress={() => this.irAlPerfil()}>
+                <Text style={styles.ownerText}>{this.props.data.owner}</Text>
                 </TouchableOpacity>
-
-                <Text style={styles.description}>{this.props.data.descripcion}</Text>
+                <Text style={styles.description}>{data.descripcion}</Text>
                 <View>
                     <Image
-                        source={{ uri: this.props.data.fotoUrl ? this.props.data.fotoUrl : '' }}
+                        source={{ uri: data.fotoUrl ? data.fotoUrl : '' }}
                         style={styles.img}
                         resizeMode='contain'
                     />
                     <Text>
-                        {this.props.data.likes.length}
+                        {data.likes.length}
                     </Text>
                     {
                         this.state.estaMiLike ?
@@ -104,9 +100,11 @@ export default class Post extends Component {
                     }
                 </View>
                 <View>
+                <View>
                     <TouchableOpacity onPress={() => this.irAComentar()}>
-                        <Text style={styles.commentText}> {this.state.comments} Comentar</Text>
+                    <Text style={styles.commentText}> {data.comentarios ? data.comentarios.length : 0} Comentarios </Text>
                     </TouchableOpacity>
+</View>
                 </View>
             </View>
         );
@@ -114,18 +112,18 @@ export default class Post extends Component {
 }
 
 const styles = StyleSheet.create({
-    img:{
+    img: {
         width: '100%',
         height: 200,
-        borderRadius: 10, 
+        borderRadius: 10,
         marginBottom: 10,
     },
-    posts:{
-       flex: 1,
-       backgroundColor: '#fff',
-       padding: 15,
-       borderRadius: 10,
-       marginBottom: 20, 
+    posts: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: 15,
+        borderRadius: 10,
+        marginBottom: 20,
     },
     ownerName: {
         fontSize: 16,
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 14,
-        color:'555',
+        color: '555',
         marginBottom: 10,
     },
     commentText: {
