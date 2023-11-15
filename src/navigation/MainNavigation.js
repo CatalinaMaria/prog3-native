@@ -7,7 +7,8 @@ import Register from '../screens/Register';
 import Login from '../screens/Login';
 import Comments from '../screens/Comments';
 import UserProfile from '../screens/UserProfile';
-import ChangePasswordScreen from '../screens/ChangePasswordScreen'; // Agregado
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';  
 
 const Stack = createNativeStackNavigator();
 
@@ -39,8 +40,12 @@ export default function MainNavigation() {
           component={UserProfile}
         />
         <Stack.Screen
-          name='ChangePasswordScreen'  // Agregado
-          component={ChangePasswordScreen} // Agregado
+          name='ChangePasswordScreen'
+          component={ChangePasswordScreen}
+        />
+        <Stack.Screen
+          name='EditProfileScreen' 
+          component={EditProfileScreen}  
         />
       </Stack.Navigator>
     </NavigationContainer>

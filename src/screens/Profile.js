@@ -67,6 +67,10 @@ export default class Profile extends Component {
     this.props.navigation.navigate('ChangePasswordScreen');
   };
 
+  handleEditProfile = () => {
+    this.props.navigation.navigate('EditProfileScreen');
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -81,6 +85,9 @@ export default class Profile extends Component {
                 <Image source={{ uri: item.data.fotoPerfil }} style={styles.profileImage} />
                 <Text style={styles.mail}>{item.data.owner}</Text>
                 <Text style={styles.minibio}>{item.data.minibio}</Text>
+                <TouchableOpacity onPress={this.handleEditProfile}>
+                  <Text style={styles.editProfileButton}>Editar Perfil</Text>
+                </TouchableOpacity>
               </View>
             )}
           />
@@ -106,16 +113,13 @@ export default class Profile extends Component {
         </View>
 
         <View style={styles.changePasswordButton}>
-        <TouchableOpacity onPress={() => {
-        console.log("Botón presionado");
-        this.props.navigation.navigate('ChangePasswordScreen');
-        }}>
-        <Text>Cambiar Contraseña</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePasswordScreen')}>
+            <Text>Cambiar Contraseña</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.logout}>
-          <TouchableOpacity onPress={() => this.logout()}>
+          <TouchableOpacity onPress={this.logout}>
             <Text>Cerrar sesión</Text>
           </TouchableOpacity>
         </View>
@@ -177,5 +181,13 @@ const styles = StyleSheet.create({
   },
   cantidadPosteos: {
     marginBottom: 15,
+  },
+  editProfileButton: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    marginTop: 10,
+  },
+  changePasswordButton: {
+    marginTop: 10,
   },
 });
