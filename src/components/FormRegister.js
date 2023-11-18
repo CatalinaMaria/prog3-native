@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { auth, db } from '../firebase/config'
+import MyImage from './Image'
 import CamaraPost from "../components/CameraPost"
 
 class FormRegister extends Component {
