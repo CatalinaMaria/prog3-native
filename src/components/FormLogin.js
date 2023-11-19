@@ -63,7 +63,7 @@ export default class FormLogin extends Component {
                         value={this.state.mail}
                         onChangeText={(text) => {
                             this.setState({ mail: text });
-                            this.actualizarEstadoCampos(); // Actualizar el estado de campos completos
+                            this.actualizarEstadoCampos(); 
                         }}
                     />
                     {this.state.emailError && (
@@ -78,7 +78,7 @@ export default class FormLogin extends Component {
                         secureTextEntry={true}
                         onChangeText={(text) => {
                             this.setState({ password: text });
-                            this.actualizarEstadoCampos(); // Actualizar el estado de campos completos
+                            this.actualizarEstadoCampos(); 
                         }}
                     />
                     {this.state.passwordError && (
@@ -91,9 +91,9 @@ export default class FormLogin extends Component {
 
                     <TouchableOpacity
                         onPress={() => this.loguearUsuario(this.state.mail, this.state.password)}
-                        disabled={!this.state.allFieldsCompleted} // Deshabilitar el botón si no todos los campos están completos
+                        disabled={!this.state.allFieldsCompleted} 
                     >
-                        <Text>
+                        <Text style={styles.textLink}>
                         ¿Aún no tienes una cuenta? 
                         <TouchableOpacity
                             onPress={()=> this.props.navigation.navigate('Register')}
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     registro:{
        
-        backgroundColor: 'green',
+        backgroundColor: '#9fc1ad',
         aspectRatio: 5,
         padding: 30,
         marginTop: 40,
@@ -133,36 +133,40 @@ const styles = StyleSheet.create({
         fontSize: 15,
         height: 350,
         width: 350,
-        
-       
     },
     productstitle:{
-        fontSize: 40,
-        fontWeight: 400,
-        color: 'gray',
-        fontFamily:'Gill Sans',
+        fontSize: 25,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#5F866F',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     control:{
-        outerWidth: 100,
-        backgroundColor: '#9fc1ad',
-        padding: 10,
-        border: 5,
-        marginBottom: 20,
-        border: 1,
-        fontFamily: 'calibri',
-        fontSize: 18,
-        color: 'white',
+        borderWidth: 1,
+    borderColor: 'gray',
+    marginBottom: 24,
+    padding: 10,
+    borderRadius: 8,
+    color: 'white',
 
     },
-
+    textLink: {
+        marginBottom: 24,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#5F866F',
+      },
     button:{
         width: 100,
         padding: 3,
-        color: 'black',
+        color: 'white',
         fontSize: 17,
         fontFamily: 'calibri',
         width:'100%',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        backgroundColor: '#5F866F',
+        borderRadius: 8,
     }
 })
 

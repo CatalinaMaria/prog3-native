@@ -58,10 +58,11 @@ export default class Profile extends Component {
       });
   }
 
-  logout() {
+  logout = () => {
     auth.signOut();
     this.props.navigation.navigate('Register');
   }
+  
 
   handleChangePassword = () => {
     this.props.navigation.navigate('ChangePasswordScreen');

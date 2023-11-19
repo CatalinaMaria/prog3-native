@@ -1,187 +1,159 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import MyImage from './Image';
 
 class FormRegister extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      mail: '',
-      password: '',
-      minibio: '',
-      fotoPerfil: '',
-      error: null,
-      emailError: null,
-      passwordError: null,
-      allFieldsCompleted: false,
-      rememberMe: false,
-      urlFoto: '',
-      paso1: true,
-    };
+    super(props)
   }
-
-  componentDidMount() {
-    // Tu código componentDidMount actual
-  }
-
-  registrarUsuario(name, email, password) {
-    // Tu código registrarUsuario actual
-  }
-
-  actualizarEstadoCamposObligatorios() {
-    const { name, mail, password } = this.state;
-    const allFieldsCompleted = name.length > 0 && mail.length > 0 && password.length > 0;
-    this.setState({ allFieldsCompleted });
-  }
-
-  actualizarFotourl(url) {
-    this.setState(
-      {
-        urlFoto: url,
-        paso1: false,
-      },
-      () => this.actualizarDocDelUsuario()
-    );
-  }
-
-  actualizarDocDelUsuario() {
-    // Tu código actualizarDocDelUsuario actual
-  }
-
+  
   render() {
+    const {
+      name,
+      mail,
+      password,
+      minibio,
+      errors,
+      mailExiste,
+    } = this.props.state;
     return (
-      <View style={styles.productswrapper}>
-        <Text style={styles.productstitle}>Regístrate en mi app</Text>
-        <View style={styles.registro}>
+      <View>
+        <Text style={styles.title}>Regístrate en nuestra pagina </Text>
+        <View>
           <TextInput
-            style={styles.control}
-            placeholder="Dinos tu nombre"
+            style={styles.input}
+            placeholder="Ingresar  nombre"
+            placeholderTextColor="white"
             keyboardType="default"
-            value={this.state.name}
-            onChangeText={(text) => {
-              this.setState({ name: text });
-              this.actualizarEstadoCamposObligatorios();
-            }}
+            onChangeText={(text) =>
+              this.props.handleInputChange('name', text)
+            }
           />
+          {errors.errorName !== '' ? (
+            <Text style={styles.errorText}>{errors.errorName}</Text>
+          ) : (
+            ''
+          )}
+
           <TextInput
-            style={styles.control}
-            placeholder="Dinos tu email"
+            style={styles.input}
+            placeholder="Ingresar correo electrónico"
+            placeholderTextColor="white"
             keyboardType="email-address"
-            value={this.state.mail}
-            onChangeText={(text) => {
-              this.setState({ mail: text });
-              this.actualizarEstadoCamposObligatorios();
-            }}
+            onChangeText={(text) =>
+              this.props.handleInputChange('mail', text)
+            }
           />
+          {errors.errorMail !== '' ? (
+            <Text style={styles.errorText}>{errors.errorMail}</Text>
+          ) : (
+            ''
+          )}
+          {mailExiste !== '' ? (
+            <Text style={styles.errorText}>{mailExiste}</Text>
+          ) : (
+            ''
+          )}
+
           <TextInput
-            style={styles.control}
-            placeholder="Dinos tu password"
-            keyboardType="default"
-            value={this.state.password}
-            secureTextEntry={true}
-            onChangeText={(text) => {
-              this.setState({ password: text });
-              this.actualizarEstadoCamposObligatorios();
-            }}
-          />
-          <TextInput
-            style={styles.control}
+            style={styles.input}
             placeholder="Crea una minibio"
-            value={this.state.minibio}
-            onChangeText={(text) => this.setState({ minibio: text })}
+            keyboardType="default"
+            value={minibio}
+            onChangeText={(text) =>
+              this.props.handleInputChange('minibio', text)
+            }
           />
           <TextInput
-            style={styles.control}
-            placeholder="Pega la URL de tu foto de perfil"
-            value={this.state.fotoPerfil}
-            onChangeText={(text) => this.setState({ fotoPerfil: text })}
+            style={styles.input}
+            placeholder="Ingresa una contraseña"
+            keyboardType="default"
+            value={password}
+            secureTextEntry={true}
+            onChangeText={(text) =>
+              this.props.handleInputChange('password', text)
+            }
           />
+          {errors.errorPassword !== '' ? (
+            <Text style={styles.errorText}>{errors.errorPassword}</Text>
+          ) : (
+            ''
+          )}
 
-          <Text style={styles.errorMessage}>{this.state.error}</Text>
-          <Text style={styles.errorMessage}>{this.state.emailError}</Text>
-          <Text style={styles.errorMessage}>{this.state.passwordError}</Text>
-
-          <Text>¿Ya estás registrado?</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.props.navegacion.navigate('Login')}
-          >
-            INICIA SESIÓN
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.rememberMeButton}
-            onPress={() => this.setState({ rememberMe: !this.state.rememberMe })}
-          >
-            <Text style={styles.rememberMeText}>
-              {this.state.rememberMe ? '✓' : ' '}
-              Recuérdame
-            </Text>
-          </TouchableOpacity>
-
-          {this.state.allFieldsCompleted && (
+          <Text style={styles.textLink}>
+            ¿Ya tienes una cuenta?
             <TouchableOpacity
-              onPress={() =>
-                this.registrarUsuario(this.state.name, this.state.mail, this.state.password)
-              }
+              onPress={() => this.props.navigation.navigate('Login')}
             >
-              <Text style={styles.button}>Regístrame</Text>
+              <Text style={styles.link}> Inicia sesión </Text>
             </TouchableOpacity>
+          </Text>
+
+          {password === '' || mail === '' || name === '' ? (
+            ''
+          ) : (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => this.props.registrarUsuario(name, mail, password, true)}
+                style={styles.btn}
+              >
+                <Text style={styles.textBtn}>Regístrame</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.mostrarCamara()
+                }}
+                style={[styles.btn, { marginTop: 16 }]}  
+              >
+                <Text style={styles.textBtn}>Tomar foto para tu perfil!</Text>
+              </TouchableOpacity>
+            </View>
           )}
         </View>
-        {this.state.paso1 && <MyImage actualizarEstadoFotoDePerfil={(url) => this.actualizarFotourl(url)} />}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  productswrapper: {
-    marginTop: 30,
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
     marginBottom: 30,
-    flex: 1,
-    justifyContent: 'center',
+    color: '#5F866F',
     alignItems: 'center',
+    justifyContent: 'center'
   },
-  registro: {
-    backgroundColor: 'green',
-    aspectRatio: 5,
-    padding: 30,
-    marginTop: 40,
-    border: 5,
-    fontFamily: 'calibri',
-    fontSize: 15,
-    height: 450,
-    width: 350,
-  },
-  productstitle: {
-    fontSize: 40,
-    fontWeight: 400,
-    color: 'gray',
-    fontFamily: 'Gill Sans',
-  },
-  control: {
-    outerWidth: 100,
-    backgroundColor: '#9fc1ad',
+  input: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginBottom: 24,
     padding: 10,
-    border: 5,
-    marginBottom: 20,
-    border: 1,
-    fontFamily: 'calibri',
-    fontSize: 18,
+    borderRadius: 8,
     color: 'white',
   },
-  button: {
-    padding: 3,
-    color: 'black',
-    fontSize: 17,
-    fontFamily: 'calibri',
-    width: '100%',
-    fontWeight: 'bold',
+  btn: {
+    backgroundColor: '#5F866F',
+    padding: 16,
+    borderRadius: 8,
   },
-  errorMessage: {
+  buttonContainer: {
+    marginTop: 16,
+  },
+  textBtn: {
+    color: 'white',
+
+  },
+  textLink: {
+    marginBottom: 24,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#5F866F',
+  },
+  link: {
+    color: '#5F866F',
+  },
+  errorText: {
     color: 'red',
-    marginBottom: 10,
   },
 });
 

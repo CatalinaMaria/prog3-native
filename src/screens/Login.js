@@ -18,10 +18,19 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View >
-        <FormLogin navegacion={this.props.navigation} />
+      <View style={styles.container}>
+        <FormLogin navigation={this.props.navigation} />
       </View>
     )
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#9fc1ad',
+    textAlign: 'center'
+  },
+});
